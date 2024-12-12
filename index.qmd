@@ -1,5 +1,5 @@
 ---
-title: "Prateek Shukla<br>Documentation for fastAI course."
+title: "<br>Blogs on Neural Networks, Machine Learning and Deep Learning"
 listing:
   contents: posts
   sort: "date desc"
