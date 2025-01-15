@@ -4,7 +4,7 @@ aliases:
 date: '2024-11-13'
 image: images/Python.png
 layout: post
-description: "Guide to install dependencies for fastAI."
+description: "Guide to install dependencies for Deep Learning."
 title: "How to setup WSL and Python for fastAI"
 categories:
 - computer_usage
@@ -157,7 +157,7 @@ A virtual environment is a self-contained directory that allows you to manage de
 To create a virtual environment just execute:
 
 ```bash
-mamba create -n fastai_env python=3.9
+mamba create -n dl_env python=3.9
 ```
 
 this will create a python virtual environment
@@ -165,7 +165,7 @@ this will create a python virtual environment
 but that's not all we also need to activate it for it to work this is done by executing
 
 ```bash
-mamba activate fastai_env
+mamba activate dl_env
 ```
 
 - A pro tip - You can activate the virtual environment everytime you want by putting it in your .bashrc file. You can do that by
@@ -174,7 +174,7 @@ mamba activate fastai_env
 nano .bashrc
 ```
 
-this opens a text editor which we will use to edit files. Edit it by adding `mamba activate fastai_env` at the end of the file.
+this opens a text editor which we will use to edit files. Edit it by adding `mamba activate dl_env` at the end of the file.
 
 then press ctrl + x to exit and y to save the file.
 
@@ -182,7 +182,7 @@ then press ctrl + x to exit and y to save the file.
 ## Step 6: Installing ipython and jupyter lab
 
 ### Need for these tools
-If you’re ready to kick your AI game up a notch, you need to get cozy with **IPython**, **JupyterLab**, **nbdev**. We have so many good reasons to use these tools
+If you’re ready to kick your AI game up a notch, you need to get cozy with **IPython** and **JupyterLab**. We have so many good reasons to use these tools
 
 We will use Ipython because
 
@@ -198,20 +198,13 @@ We will use Jupyter Lab because -
 
 - **Interactive Widgets**: Create interactive visualizations and controls right in your notebooks. Want to tweak parameters on the fly? Just slide those sliders.
 
-nbdev is Important because
-
-1. **Literate Programming**: Write code, tests, and documentation together in Jupyter notebooks, enhancing readability and maintainability.
-2. **Automatic Documentation**: Generate up-to-date documentation directly from your notebooks, streamlining the process of creating and maintaining libraries.
-3. **Integrated Testing**: Write and run unit tests within your notebooks, ensuring code quality with automatic execution during builds and CI/CD processes.
-
-
 Basically they help is making the experiance smoother for the journey.
 ### Installation
 
 Here is the command to install these tools -
 
 ```bash
-mamba install ipython jupyterlab nbdev
+mamba install ipython jupyterlab
 ```
 
 ## Step 7: Install pytorch
@@ -256,19 +249,7 @@ sudo sh cuda_12.6.2_560.35.03_linux.run
 mamba install pytorch torchvision torchaudio cpuonly -c pytorch
 ```
 
-## Step 8: Install FastAI
-
-Fast AI will be the main library we will be working with. It is designed to make deep learning accessible to everyone, regardless of their coding experience. It is is built on top of PyTorch designed to make the complex realm of artificial intelligence as approachable as your favorite recipe for instant noodles.
-
-### Installation
-
-To install it just execute this command in your terminal -
-
-```bash
-mamba install -c fastai fastai
-```
-
-And you have successfully installed the tools required for the course.
+And you have successfully installed the tools required for deep learning.
 
 # Optional stuff
 

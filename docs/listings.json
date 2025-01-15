@@ -2,10 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/docs/posts/Liner-Regression.html",
       "/posts/Liner-Regression.html",
-      "/posts/Lesson-2-data-augmentation-and-putting-models-on-production.html",
-      "/posts/Lesson-1-Making-a-Cyclist-recogniser.html",
       "/posts/Installing-Dependencies.html"
     ]
   }

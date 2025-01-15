@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.39">
+<meta name="generator" content="quarto-1.7.6">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2024-11-13">
-<meta name="description" content="Guide to install dependencies for fastAI.">
+<meta name="description" content="Guide to install dependencies for Deep Learning.">
 
 <title>How to setup WSL and Python for fastAI – Prateek’s Blog</title>
 <style>
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0a9048d95e02c7ff9c82715fd5ddea4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0e73b4cceb5af2883eb48574a95eedab.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-2a7528f117d075273fca3a0b09f3bef2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -158,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Guide to install dependencies for fastAI.
+    Guide to install dependencies for Deep Learning.
   </div>
 </div>
 
@@ -276,22 +276,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Mamba and Conda are both powerful tools used for package and environment management in Python. They install everything we need for python and help us create virtual environments. This brings us to - ## Step 5: Enable virtual environment</p>
 <p>A virtual environment is a self-contained directory that allows you to manage dependencies for different projects without stepping on each other’s toes. It will help seperate python we need with the system python</p>
 <p>To create a virtual environment just execute:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> create <span class="at">-n</span> fastai_env python=3.9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> create <span class="at">-n</span> dl_env python=3.9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>this will create a python virtual environment</p>
 <p>but that’s not all we also need to activate it for it to work this is done by executing</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate fastai_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate dl_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>A pro tip - You can activate the virtual environment everytime you want by putting it in your .bashrc file. You can do that by</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> .bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>this opens a text editor which we will use to edit files. Edit it by adding <code>mamba activate fastai_env</code> at the end of the file.</p>
+<p>this opens a text editor which we will use to edit files. Edit it by adding <code>mamba activate dl_env</code> at the end of the file.</p>
 <p>then press ctrl + x to exit and y to save the file.</p>
 </section>
 <section id="step-6-installing-ipython-and-jupyter-lab" class="level2">
 <h2 class="anchored" data-anchor-id="step-6-installing-ipython-and-jupyter-lab">Step 6: Installing ipython and jupyter lab</h2>
 <section id="need-for-these-tools" class="level3">
 <h3 class="anchored" data-anchor-id="need-for-these-tools">Need for these tools</h3>
-<p>If you’re ready to kick your AI game up a notch, you need to get cozy with <strong>IPython</strong>, <strong>JupyterLab</strong>, <strong>nbdev</strong>. We have so many good reasons to use these tools</p>
+<p>If you’re ready to kick your AI game up a notch, you need to get cozy with <strong>IPython</strong> and <strong>JupyterLab</strong>. We have so many good reasons to use these tools</p>
 <p>We will use Ipython because</p>
 <ul>
 <li>It helps us to display media like Images, Videos etc</li>
@@ -304,15 +304,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Extensions Galore</strong>: Want to customize your experience? JupyterLab supports extensions that let you add new features or integrate with other tools. It’s like dressing up your notebook in the latest fashion make it yours</p></li>
 <li><p><strong>Interactive Widgets</strong>: Create interactive visualizations and controls right in your notebooks. Want to tweak parameters on the fly? Just slide those sliders.</p></li>
 </ul>
-<p>nbdev is Important because</p>
-<ol type="1">
-<li><strong>Literate Programming</strong>: Write code, tests, and documentation together in Jupyter notebooks, enhancing readability and maintainability.</li>
-<li><strong>Automatic Documentation</strong>: Generate up-to-date documentation directly from your notebooks, streamlining the process of creating and maintaining libraries.</li>
-<li><strong>Integrated Testing</strong>: Write and run unit tests within your notebooks, ensuring code quality with automatic execution during builds and CI/CD processes.</li>
-</ol>
 <p>Basically they help is making the experiance smoother for the journey. ### Installation</p>
 <p>Here is the command to install these tools -</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> install ipython jupyterlab nbdev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> install ipython jupyterlab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="step-7-install-pytorch" class="level2">
@@ -341,16 +335,7 @@ wget https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/
 <li>For devices with integrated graphics - If you are poor student like me and have device with integrated graphics then you should install pytorch by using following command -</li>
 </ul>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> install pytorch torchvision torchaudio cpuonly <span class="at">-c</span> pytorch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="step-8-install-fastai" class="level2">
-<h2 class="anchored" data-anchor-id="step-8-install-fastai">Step 8: Install FastAI</h2>
-<p>Fast AI will be the main library we will be working with. It is designed to make deep learning accessible to everyone, regardless of their coding experience. It is is built on top of PyTorch designed to make the complex realm of artificial intelligence as approachable as your favorite recipe for instant noodles.</p>
-<section id="installation-1" class="level3">
-<h3 class="anchored" data-anchor-id="installation-1">Installation</h3>
-<p>To install it just execute this command in your terminal -</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> install <span class="at">-c</span> fastai fastai</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And you have successfully installed the tools required for the course.</p>
+<p>And you have successfully installed the tools required for deep learning.</p>
 </section>
 </section>
 </section>
@@ -367,18 +352,18 @@ wget https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/
 <li><strong>Update Package List</strong>:
 <ul>
 <li><p>Before installing any software, update the package list by running:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 <li><strong>Install Vim</strong>:
 <ul>
 <li><p>Install Vim by executing the following command:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install vim <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install vim <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>This command retrieves and installs Vim along with its necessary components.</p></li>
 </ul></li>
 <li><strong>Launching Vim</strong>:
 <ul>
 <li><p>To create or edit a file, use the command:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> filename.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> filename.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Replace <code>filename.txt</code> with your desired file name. If the file does not exist, Vim will create it.</p></li>
 </ul></li>
 <li><strong>Basic Navigation and Editing</strong>:
@@ -409,15 +394,15 @@ wget https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/
 <li><p><strong>Install Prerequisites</strong>:</p>
 <ul>
 <li><p>Update the package list and install the necessary packages (<code>make</code>, <code>git</code>, and <code>vim</code>) by running:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install make git vim <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install make git vim <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 <li><p><strong>Install Ranger</strong>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install ranger <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install ranger <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p><strong>Configure Ranger</strong>:</p>
 <ul>
 <li><p>Run Ranger once to create the configuration directory:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ranger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ranger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 </ol>
 </section>
@@ -427,7 +412,7 @@ wget https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/
 <li><strong>Launching Ranger</strong>:
 <ul>
 <li><p>Start Ranger by typing:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ranger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ranger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 <li><strong>Interface Overview</strong>:
 <ul>
