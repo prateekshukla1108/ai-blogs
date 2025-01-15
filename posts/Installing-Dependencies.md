@@ -5,7 +5,7 @@ date: '2024-11-13'
 image: images/Python.png
 layout: post
 description: "Guide to install dependencies for Deep Learning."
-title: "How to setup WSL and Python for fastAI"
+title: "How to setup WSL, Python and PyTorch for Deep Learning"
 categories:
 - computer_usage
 

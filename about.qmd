@@ -9,6 +9,4 @@ about:
       href: https://github.com/prateekshukla1108
 ---
 
-The purpose of this blog is to create a place where fastAI learners can come and follow along while watching the lecture
-
-
+The purpose of this blog is to de-jargonize and simplify complex topics into understandable bits while exploring important topics on a Deep Level.
