@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/docs/posts/Liner-Regression.html",
+      "/posts/CUDA-for-poor-people.html",
       "/posts/Liner-Regression.html",
       "/posts/Installing-Dependencies.html"
     ]

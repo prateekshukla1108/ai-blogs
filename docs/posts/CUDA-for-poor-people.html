@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-02-01">
+<meta name="description" content="Guide to using LeetGPU and Colab to write CUDA Kernels">
 
-<title> Blogs on Neural Networks, Machine Learning and Deep Learning – Prateek's Blog</title>
+<title>How to write CUDA kernels without actually having a GPU – Prateek’s Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0a9048d95e02c7ff9c82715fd5ddea4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2a7528f117d075273fca3a0b09f3bef2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0a9048d95e02c7ff9c82715fd5ddea4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-2a7528f117d075273fca3a0b09f3bef2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +102,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Prateek’s Blog</span>
     </a>
   </div>
@@ -149,7 +125,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -165,174 +141,117 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title"><br>Blogs on Neural Networks, Machine Learning and Deep Learning</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Q1VEQS1Qcm9ncmFtbWluZw==">CUDA-Programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29tcHV0ZXJfdXNhZ2U=">computer_usage <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How to write CUDA kernels without actually having a GPU</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">CUDA-Programming</div>
+  </div>
+  </div>
 
-
-
-
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1738393972498" data-listing-reading-time-sort="1" data-listing-word-count-sort="54">
-
-<div class="thumbnail">
-<a href="./docs/posts/Liner-Regression.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a>
+<div>
+  <div class="description">
+    Guide to using LeetGPU and Colab to write CUDA Kernels
+  </div>
 </div>
 
-<div class="body">
 
-<h3 class="no-anchor listing-title"><a href="./docs/posts/Liner-Regression.html" class="no-external"></a></h3>
-<div class="listing-subtitle"><a href="./docs/posts/Liner-Regression.html" class="no-external"></a></div>
+<div class="quarto-title-meta">
 
- 
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 1, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
-<div class="delink listing-description"><a href="./docs/posts/Liner-Regression.html" class="no-external">
-Redirect
-</a></div>
 
-</div>
-<div class="metadata"><a href="./docs/posts/Liner-Regression.html" class="no-external">
+</header>
 
-</a></div>
 
-</div>
+<p>Behold, you seekers of knowledge of CUDA! You who stand before the challenge of parallel processing, yearning for jobs of CUDA programming yet finding your hardware lacking! What is a developer to do when faced with such a challenge? With platforms like colab and leetgpu, We no longer need to resign ourselves to the sequential nature of our CPUs. Here’s how to use them. This is for people who don’t have a device with GPU and can’t afford to ssh into a paid cloud server.</p>
+<section id="option-1-leetgpu" class="level1">
+<h1>Option 1: LeetGPU</h1>
+<p>LeetGPU is an excellent platform for beginners writing their first CUDA kernels. It provides access to powerful GPUs like the RTX 3070 through a simple web interface at leetgpu.com. However, there are some limitations to consider:</p>
+<ol type="1">
+<li><p>Limited Launch Configuration Options: When writing complex kernels, you often need to specify the target architecture. NVCC compiles differently for different architectures, especially when using shared memory and advanced CUDA features. LeetGPU doesn’t provide full control over these compilation parameters.</p></li>
+<li><p>No Profiling Support: You cannot use tools like Nsight Compute to benchmark your kernels.</p></li>
+<li><p>Intermittent Platform Issues: Sometimes code execution fails due to host-side configuration problems that are beyond the user’s control.</p></li>
+</ol>
+</section>
+<section id="option-2-google-colab" class="level1">
+<h1>Option 2: Google Colab</h1>
+<p>Google Colab offers free access to GPU resources with a more flexible development environment. This method involves writing CUDA code in Python and executing it using shell commands. Colab addresses many of the limitations of LeetGPU.</p>
+<section id="setting-up-cuda-in-colab" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-cuda-in-colab">Setting Up CUDA in Colab</h2>
+<ol type="1">
+<li><p>Create a new Colab notebook</p></li>
+<li><p>Enable GPU runtime:</p>
+<ul>
+<li>Navigate to Runtime &gt; Change runtime type</li>
+<li>Select GPU from the Hardware accelerators dropdown</li>
+</ul></li>
+<li><p>Verify GPU access by running:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>nvidia<span class="op">-</span>smi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note: The <code>!</code> prefix allows you to run shell commands in Colab.</p></li>
+<li><p>Write and execute CUDA code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write CUDA code to a file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cuda_code <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">#include &lt;stdio.h&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">__global__ void hello_cuda() {</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">    printf("Hello from block </span><span class="sc">%d</span><span class="st">, thread </span><span class="sc">%d</span><span class="ch">\\</span><span class="st">n", </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">           blockIdx.x, threadIdx.x);</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">int main() {</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">    hello_cuda&lt;&lt;&lt;2, 4&gt;&gt;&gt;();</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">    cudaDeviceSynchronize();</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">    return 0;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to file</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'hello.cu'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    f.write(cuda_code)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile and run</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>nvcc hello.cu <span class="op">-</span>o hello_cuda</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>.<span class="op">/</span>hello_cuda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="important-considerations-for-colab" class="level2">
+<h2 class="anchored" data-anchor-id="important-considerations-for-colab">Important Considerations for Colab</h2>
+<ol type="1">
+<li><p>String Formatting: When writing CUDA code in Python strings, you need to escape certain characters:</p>
+<ul>
+<li>Use <code>\\n</code> instead of <code>\n</code> for newlines</li>
+<li>Use forward slashes for file paths (<code>my_code/kernel.cu</code>) instead of backslashes</li>
+</ul></li>
+<li><p>GPU Performance: Free tier users get access to less powerful GPUs like the P100, which offers lower performance compared to LeetGPU’s RTX 3070.</p></li>
+<li><p>Architecture-Specific Compilation: For complex kernels with memory management, specify the target architecture during compilation:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nvcc</span> <span class="at">-o</span> myprogram <span class="at">-arch</span><span class="op">=</span>sm_70 myprogram.cu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>-arch=sm_70</code> flag targets the GPU architecture available in your Colab instance.</p></li>
+</ol>
+<p>By using these platforms, you can develop your CUDA programming skills without investing in dedicated hardware. Each option has its trade-offs, so choose the one that best fits your needs and complexity level.</p>
 
-<div class="quarto-post image-right" data-index="1" data-categories="Q1VEQS1Qcm9ncmFtbWluZw==" data-listing-date-sort="1738348200000" data-listing-file-modified-sort="1738394097571" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="565">
 
-<div class="thumbnail">
-<a href="./posts/CUDA-for-poor-people.html" class="no-external">
+</section>
+</section>
 
-<img loading="lazy" src="./posts/images/cuda.jpg" class="thumbnail-image">
-
-</a>
-</div>
-
-<div class="body">
-
-<h3 class="no-anchor listing-title"><a href="./posts/CUDA-for-poor-people.html" class="no-external">How to write CUDA kernels without actually having a GPU</a></h3>
-<div class="listing-subtitle"><a href="./posts/CUDA-for-poor-people.html" class="no-external"></a></div>
-
- 
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q1VEQS1Qcm9ncmFtbWluZw=='); return false;">CUDA-Programming</div>
-
-</div>
- 
-
-<div class="delink listing-description"><a href="./posts/CUDA-for-poor-people.html" class="no-external">Guide to using LeetGPU and Colab to write CUDA Kernels</a></div>
-
-</div>
-<div class="metadata"><a href="./posts/CUDA-for-poor-people.html" class="no-external">
-<div class="listing-date">Feb 1, 2025</div>
-
-</a></div>
-
-</div>
-
-<div class="quarto-post image-right" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5n" data-listing-date-sort="1733855400000" data-listing-file-modified-sort="1738391072247" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="610">
-
-<div class="thumbnail">
-<a href="./posts/Liner-Regression.html" class="no-external">
-
-<img loading="lazy" src="./posts/images/ML.jpg" class="thumbnail-image">
-
-</a>
-</div>
-
-<div class="body">
-
-<h3 class="no-anchor listing-title"><a href="./posts/Liner-Regression.html" class="no-external">Demystifying Liner Regression with the Feynman Method</a></h3>
-<div class="listing-subtitle"><a href="./posts/Liner-Regression.html" class="no-external"></a></div>
-
- 
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">Machine Learning</div>
-
-</div>
- 
-
-<div class="delink listing-description"><a href="./posts/Liner-Regression.html" class="no-external">Explaining Liner Regression in Simplest way</a></div>
-
-</div>
-<div class="metadata"><a href="./posts/Liner-Regression.html" class="no-external">
-<div class="listing-date">Dec 11, 2024</div>
-
-</a></div>
-
-</div>
-
-<div class="quarto-post image-right" data-index="3" data-categories="Y29tcHV0ZXJfdXNhZ2U=" data-listing-date-sort="1731436200000" data-listing-file-modified-sort="1738391072246" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1957">
-
-<div class="thumbnail">
-<a href="./posts/Installing-Dependencies.html" class="no-external">
-
-<img loading="lazy" src="./posts/images/Python.png" class="thumbnail-image">
-
-</a>
-</div>
-
-<div class="body">
-
-<h3 class="no-anchor listing-title"><a href="./posts/Installing-Dependencies.html" class="no-external">How to setup WSL, Python and PyTorch for Deep Learning</a></h3>
-<div class="listing-subtitle"><a href="./posts/Installing-Dependencies.html" class="no-external"></a></div>
-
- 
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29tcHV0ZXJfdXNhZ2U='); return false;">computer_usage</div>
-
-</div>
- 
-
-<div class="delink listing-description"><a href="./posts/Installing-Dependencies.html" class="no-external">Guide to install dependencies for Deep Learning.</a></div>
-
-</div>
-<div class="metadata"><a href="./posts/Installing-Dependencies.html" class="no-external">
-<div class="listing-date">Nov 13, 2024</div>
-
-</a></div>
-
-</div>
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
